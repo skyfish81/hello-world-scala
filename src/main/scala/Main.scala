@@ -1,3 +1,8 @@
+import scala.concurrent.ExecutionContext.Implicits.global
+import scala.concurrent.Future
+import scala.util.{Failure, Random, Success}
+
+
 object Main extends App {
   val WATERMELON_CALORIES = 98
 
@@ -99,4 +104,57 @@ object Main extends App {
     x + 1
   }
 
+  println("========= CONCURRENCY ==========")
+
+  val theFuture = Future {
+    someTimeConsumingComputation()
+  }
+  val anotherFuture = Future {
+    2 / 0
+  }
+
+  theFuture.onComplete {
+    case Success(result) => println(result)
+    case Failure(t) => println(s"Error: ${t.getMessage}")
+  }
+  val usdQuote = Future {
+    stockQuote("USD")
+  }
+
+  anotherFuture.onComplete {
+    case Success(result) => println(result)
+    case Failure(t) => println(s"Error: ${t.getMessage}")
+  }
+  val chfQuote = Future {
+    stockQuote("CHF")
+  }
+  val isProfitable = for {
+    usd <- usdQuote
+    chf <- chfQuote
+  } yield {
+    //    usd < chf
+    Vector(usd, chf)
+  }
+  val aList = 0 to 20
+  val bList = Vector(100, 200)
+
+  isProfitable.onComplete {
+    case Success(result) => println(result)
+    case Failure(t) => println(s"Error: ${t.getMessage}")
+  }
+  val newList2 = for {
+    a <- aList if a % 2 == 0
+    b <- bList //de ning new val and using it inside yield
+    x = a + b
+  } yield x
+
+  def someTimeConsumingComputation(): Int = {
+    25 + 50
+  }
+
+  def stockQuote(currency: String): BigDecimal = {
+    Random.nextDouble()
+  }
+
+  println(newList2)
 }

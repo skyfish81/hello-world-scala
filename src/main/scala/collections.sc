@@ -12,6 +12,7 @@ val newList = xs.map(x => x / 2)
 
 println(newList)
 println(xs)
+xs.mkString("|")
 
 //filtering
 val ys = Vector(1, 2, 3, 4, 5).filter(x => x < 3)
