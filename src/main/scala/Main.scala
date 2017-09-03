@@ -23,4 +23,13 @@ object Main extends App {
   val s = Recipe(100) // apply method is called by default
   println(s.calories)
 
+  println("========= TRAITS ==========")
+  val g = new GermanGreetings
+  println(g.sayHello) //outputs Guten Tag
+  println(g.defaultHello) //outputs Hello
+
+  val j = new JapaneseGreetings with DefaultGreetings
+  println(j.sayHello) //outputs konnichiwa
+  println(j.defaultHello) //outputs Hello
+
 }
