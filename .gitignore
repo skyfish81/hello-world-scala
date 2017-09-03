@@ -93,3 +93,5 @@ hs_err_pid*
 ### Scala ###
 
 # End of https://www.gitignore.io/api/scala,intellij,idea,java
+/target/
+project/target/
